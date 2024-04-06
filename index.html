@@ -86,7 +86,7 @@
           .attr("d", path)
           .style("fill", function (d) {
             // Preencher cada estado com uma cor diferente
-            return transparencyMetrics[d.properties.AV1].color;
+            return transparencyMetrics[d.properties.AV2].color;
           })
           .style("stroke", "black")
           .style("stroke-width", 1)
@@ -97,7 +97,7 @@
               .html(
                 d.properties.NOME_UF +
                   ": " +
-                  transparencyMetrics[d.properties.AV1].transparency
+                  transparencyMetrics[d.properties.AV2].transparency
               ) // Adiciona o nome do estado ao tooltip
               .style("left", x + 575 + "px")
               .style("top", y + "px");

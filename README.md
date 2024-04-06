@@ -20,4 +20,4 @@ Este projeto é uma implementação do mapa do Brasil utilizando a biblioteca D3
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request com melhorias, correções de bugs ou novos recursos.
 
-### Você pode acessar a prview por [esse link](https://jezzdiego.github.io/D3-Brazil-Map/)
+### Você pode acessar a preview por [esse link](https://jezzdiego.github.io/D3-Brazil-Map/)
