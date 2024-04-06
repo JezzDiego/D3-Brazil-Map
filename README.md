@@ -7,7 +7,7 @@ Este projeto é uma implementação do mapa do Brasil utilizando a biblioteca D3
 - Utiliza a biblioteca D3.js para renderizar o mapa do Brasil.
 - Permite a interação com o mapa em forma de tooltip.
 - Possibilidade de exibição de dados geográficos específicos em diferentes regiões do Brasil.
-- Há uma classificação de transparência das defensorias públicas de cada estado (essa implementação é usada em um projeto privado nesse sentido).
+- Há uma classificação de transparência das defensorias públicas de cada estado (essa implementação é usada em um projeto privado nesse sentido e pode não estar atualizada).
 
 ## Como usar
 
