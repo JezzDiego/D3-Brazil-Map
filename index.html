@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mapa do Brasil com D3.js</title>
+    <!-- Incluindo D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+      /* Estilos opcionais */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      #map-container {
+        width: 800px;
+        height: 600px;
+        margin: 0 auto;
+        position: relative; /* Permitir que os textos fiquem posicionados corretamente */
+      }
+      .state-label {
+        font-size: 10px;
+        font-weight: bold;
+        fill: black;
+        text-anchor: middle; /* Centralizar o texto no centro do estado */
+      }
+      .tooltip {
+        position: absolute;
+        text-align: center;
+        max-width: 400px;
+        padding: 0.8rem;
+        font: 14px sans-serif;
+        font-weight: bold;
+        background: lightsteelblue;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Div para conter o SVG -->
+    <div id="map-container"></div>
+
+    <script>
+      const transparencyMetrics = [
+        { transparency: "Sem transparência", color: "#EDF8FB" },
+        { transparency: "Baixíssima transparência", color: "#B2E2E2" },
+        { transparency: "Baixa transparência", color: "#66C2A4" },
+        { transparency: "Média transparência", color: "#2CA25F" },
+        { transparency: "Alta transparência", color: "#006D2C" },
+      ];
+      // Código JavaScript usando D3.js para desenhar um mapa com todos os estados do Brasil
+
+      var width = 875;
+      var height = 875;
+
+      var svg = d3
+        .select("#map-container")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      var projection = d3
+        .geoMercator()
+        .center([-55, -15])
+        .scale(1200)
+        .translate([width / 2, height / 2]);
+
+      var path = d3.geoPath().projection(projection);
+
+      var tooltip = d3
+        .select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+      // Carregar o arquivo GeoJSON
+      d3.json("brasil.json").then(function (data) {
+        // Desenhar os estados
+        svg
+          .selectAll("path")
+          .data(data.features)
+          .enter()
+          .append("path")
+          .attr("d", path)
+          .style("fill", function (d) {
+            // Preencher cada estado com uma cor diferente
+            return transparencyMetrics[d.properties.AV1].color;
+          })
+          .style("stroke", "black")
+          .style("stroke-width", 1)
+          .on("mousemove", function (event, d) {
+            let [x, y] = d3.pointer(event);
+            tooltip.transition().duration(200).style("opacity", 0.9);
+            tooltip
+              .html(
+                d.properties.NOME_UF +
+                  ": " +
+                  transparencyMetrics[d.properties.AV1].transparency
+              ) // Adiciona o nome do estado ao tooltip
+              .style("left", x + 575 + "px")
+              .style("top", y + "px");
+          })
+          .on("mouseout", function (d) {
+            // Adiciona o evento de mouseout
+            tooltip.transition().duration(200).style("opacity", 0);
+          });
+
+        // Adicionar os nomes dos estados
+        svg
+          .selectAll(".state-label")
+          .data(data.features)
+          .enter()
+          .append("text")
+          .attr("class", "state-label")
+          .attr("transform", function (d) {
+            // Encontra o centro do estado para posicionar o texto
+            var center = path.centroid(d);
+            center[1] += 6; // Adiciona 5 pixels para baixo [y]
+            console.log(center);
+            return "translate(" + center + ")";
+          })
+          .text(function (d) {
+            return d.properties.UF; // Obtém o nome do estado
+          })
+          .style("pointer-events", "none") // Impede que o evento de mouseover seja ativado no texto
+          .style("font-size", "14px");
+      });
+    </script>
+  </body>
+</html>
